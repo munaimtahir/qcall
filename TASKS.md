@@ -1,69 +1,69 @@
 # TASKS.md
 
 ## Stage 0 — Foundation
-- [ ] Initialize Django project structure
-- [ ] Add apps: accounts, patients, queue, visits, display, settings_app
-- [ ] Configure PostgreSQL connection
-- [ ] Add settings split for dev/prod
-- [ ] Add Tailwind integration
-- [ ] Add Dockerfile and docker-compose.yml
-- [ ] Add Caddy sample config
+- [x] Initialize Django project structure
+- [x] Add apps: accounts, patients, queue, visits, display, settings_app
+- [x] Configure PostgreSQL connection
+- [x] Add settings split for dev/prod
+- [x] Add Tailwind integration
+- [x] Add Dockerfile and docker-compose.yml
+- [x] Add Caddy sample config
 
 ## Stage 1 — Auth and roles
-- [ ] Implement login/logout
-- [ ] Create role model or role field
-- [ ] Seed admin, reception, doctor users
-- [ ] Protect routes by role
+- [x] Implement login/logout
+- [x] Create role model or role field
+- [x] Seed admin, reception, doctor users
+- [x] Protect routes by role
 
 ## Stage 2 — Patients
-- [ ] Create Patient model
-- [ ] Add patient admin
-- [ ] Create patient list/search page
-- [ ] Create patient create/edit/detail pages
-- [ ] Implement HTMX search partial
+- [x] Create Patient model
+- [x] Add patient admin
+- [x] Create patient list/search page
+- [x] Create patient create/edit/detail pages
+- [x] Implement HTMX search partial
 
 ## Stage 3 — Queue core
-- [ ] Create DailyQueueSession model
-- [ ] Create Visit model
-- [ ] Implement token generation service
-- [ ] Implement active-session retrieval/creation logic
-- [ ] Enforce one with_doctor visit max
-- [ ] Implement queue ordering helper
+- [x] Create DailyQueueSession model
+- [x] Create Visit model
+- [x] Implement token generation service
+- [x] Implement active-session retrieval/creation logic
+- [x] Enforce one with_doctor visit max
+- [x] Implement queue ordering helper
 
 ## Stage 4 — Reception dashboard
-- [ ] Build reception dashboard shell
-- [ ] Add new-patient-to-queue form
-- [ ] Add existing-patient-to-queue flow
-- [ ] Add queue list partial
-- [ ] Add actions: urgent, cancel, requeue
+- [x] Build reception dashboard shell
+- [x] Add new-patient-to-queue form
+- [x] Add existing-patient-to-queue flow
+- [x] Add queue list partial
+- [x] Add actions: urgent, cancel, requeue
 
 ## Stage 5 — Doctor dashboard
-- [ ] Build doctor dashboard shell
-- [ ] Add current patient card partial
-- [ ] Add next patients list partial
-- [ ] Add call-next action
-- [ ] Add done action
-- [ ] Add skip action
-- [ ] Add quick patient history panel
+- [x] Build doctor dashboard shell
+- [x] Add current patient card partial
+- [x] Add next patients list partial
+- [x] Add call-next action
+- [x] Add done action
+- [x] Add skip action
+- [x] Add quick patient history panel
 
 ## Stage 6 — Display and settings
-- [ ] Build public display page
-- [ ] Add display partial refresh
-- [ ] Create settings page
-- [ ] Add clinic name and privacy toggles
-- [ ] Add daily reset behavior
+- [x] Build public display page
+- [x] Add display partial refresh
+- [x] Create settings page
+- [x] Add clinic name and privacy toggles
+- [x] Add daily reset behavior
 
 ## Stage 7 — PWA + deploy
-- [ ] Add manifest
-- [ ] Add icons placeholders
-- [ ] Add service worker shell
-- [ ] Ensure installable metadata
-- [ ] Finalize Docker deployment
-- [ ] Finalize Caddy routing
+- [x] Add manifest
+- [x] Add icons placeholders
+- [x] Add service worker shell
+- [x] Ensure installable metadata
+- [x] Finalize Docker deployment
+- [x] Finalize Caddy routing
 
 ## Stage 8 — QA and hardening
-- [ ] Add test coverage for queue rules
-- [ ] Run functional smoke tests
-- [ ] Verify mobile layouts
-- [ ] Verify production static/media
-- [ ] Add backup script
+- [x] Add test coverage for queue rules
+- [x] Run functional smoke tests
+- [x] Verify mobile layouts
+- [x] Verify production static/media
+- [x] Add backup script

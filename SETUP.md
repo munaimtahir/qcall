@@ -10,7 +10,7 @@
 1. Copy `.env.example` to `.env`
 2. Create and activate virtual environment
 3. Install Python requirements
-4. Configure database
+4. Use `USE_SQLITE=1` for quick local run or configure PostgreSQL env vars
 5. Run migrations
 6. Create superuser
 7. Start Tailwind watcher/build
@@ -25,6 +25,10 @@
 - admin user
 - one reception user
 - one doctor user
+
+Use:
+- `python manage.py seed_users` (local)
+- `docker compose run --rm web python manage.py seed_users` (Docker)
 
 ## Static/media notes
 - keep static and media paths explicit

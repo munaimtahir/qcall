@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0f172a">
+    <title>{% block title %}{{ app_settings.clinic_name|default:"Queue Management MVP" }}{% endblock %}</title>
+    <link rel="manifest" href="{% url 'pwa-manifest' %}">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.12"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body class="min-h-screen bg-slate-100 text-slate-900">
+    <header class="bg-slate-900 text-white">
+        <div class="mx-auto max-w-7xl px-4 py-3 flex items-center justify-between gap-4">
+            <a href="{% url 'accounts:home' %}" class="font-bold">{{ app_settings.clinic_name|default:"Queue Management MVP" }}</a>
+            {% if request.user.is_authenticated %}
+                <nav class="flex items-center gap-4 text-sm">
+                    {% if request.user.role == "reception" or request.user.role == "admin" or request.user.is_superuser %}
+                        <a href="{% url 'reception-dashboard' %}" class="hover:underline">Reception</a>
+                    {% endif %}
+                    {% if request.user.role == "doctor" or request.user.role == "admin" or request.user.is_superuser %}
+                        <a href="{% url 'doctor-dashboard' %}" class="hover:underline">Doctor</a>
+                    {% endif %}
+                    <a href="{% url 'patients:list' %}" class="hover:underline">Patients</a>
+                    <a href="{% url 'display:screen' %}" class="hover:underline">Display</a>
+                    {% if request.user.role == "admin" or request.user.is_superuser %}
+                        <a href="{% url 'settings_app:settings-home' %}" class="hover:underline">Settings</a>
+                    {% endif %}
+                    <a href="{% url 'accounts:logout' %}" class="rounded bg-white/10 px-3 py-1 hover:bg-white/20">Logout</a>
+                </nav>
+            {% endif %}
+        </div>
+    </header>
+
+    <main class="mx-auto max-w-7xl px-4 py-6">
+        {% if messages %}
+            <div class="space-y-2 mb-4">
+                {% for message in messages %}
+                    <div class="rounded border px-3 py-2 text-sm {% if message.tags == 'error' %}bg-red-50 border-red-300 text-red-700{% else %}bg-emerald-50 border-emerald-300 text-emerald-700{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% block content %}{% endblock %}
+    </main>
+
+    <script>
+        if ("serviceWorker" in navigator) {
+            window.addEventListener("load", function () {
+                navigator.serviceWorker.register("{% url 'pwa-service-worker' %}");
+            });
+        }
+    </script>
+</body>
+</html>

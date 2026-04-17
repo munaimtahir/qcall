@@ -1,0 +1,39 @@
+{% if query and not patients %}
+    <p class="text-sm text-slate-500">No matching patient found.</p>
+{% elif query %}
+    <div class="overflow-x-auto rounded border">
+        <table class="w-full text-sm">
+            <thead>
+                <tr class="border-b bg-slate-50 text-left">
+                    <th class="py-2 px-3">Patient</th>
+                    <th class="py-2 px-3">MR</th>
+                    <th class="py-2 px-3">Mobile</th>
+                    <th class="py-2 px-3">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for patient in patients %}
+                    <tr class="border-b">
+                        <td class="py-2 px-3">
+                            <a class="hover:underline" href="{% url 'patients:detail' patient.id %}">{{ patient.full_name }}</a>
+                        </td>
+                        <td class="py-2 px-3">{{ patient.mr_number|default:"—" }}</td>
+                        <td class="py-2 px-3">{{ patient.mobile_number }}</td>
+                        <td class="py-2 px-3">
+                            <form method="post" class="flex flex-wrap gap-2" hx-post="{% url 'queue:add-existing' %}" hx-target="#queue-list-container" hx-swap="outerHTML">
+                                {% csrf_token %}
+                                <input type="hidden" name="patient_id" value="{{ patient.id }}">
+                                <select name="priority" class="rounded border px-2 py-1 text-xs">
+                                    <option value="normal">Normal</option>
+                                    <option value="urgent">Urgent</option>
+                                </select>
+                                <input type="text" name="short_note" placeholder="Short note" class="rounded border px-2 py-1 text-xs">
+                                <button class="rounded bg-slate-900 px-2 py-1 text-xs text-white">Add</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endif %}

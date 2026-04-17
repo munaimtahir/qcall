@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 set -euo pipefail
-python manage.py test
+USE_SQLITE=1 python manage.py test

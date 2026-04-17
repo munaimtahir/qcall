@@ -1,0 +1,49 @@
+{% extends "base/base.html" %}
+
+{% block title %}Patient · {{ patient.full_name }}{% endblock %}
+
+{% block content %}
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <section class="lg:col-span-1 rounded-lg bg-white p-4 shadow">
+        <h1 class="text-xl font-semibold mb-3">{{ patient.full_name }}</h1>
+        <dl class="space-y-2 text-sm">
+            <div><dt class="font-medium">MR Number</dt><dd>{{ patient.mr_number|default:"—" }}</dd></div>
+            <div><dt class="font-medium">Mobile</dt><dd>{{ patient.mobile_number }}</dd></div>
+            <div><dt class="font-medium">Age / Gender</dt><dd>{{ patient.age }} / {{ patient.get_gender_display }}</dd></div>
+            <div><dt class="font-medium">Address</dt><dd>{{ patient.address|default:"—" }}</dd></div>
+            <div><dt class="font-medium">Notes</dt><dd>{{ patient.notes|default:"—" }}</dd></div>
+        </dl>
+    </section>
+    <section class="lg:col-span-2 rounded-lg bg-white p-4 shadow">
+        <h2 class="text-lg font-semibold mb-3">Visit history</h2>
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+                <thead>
+                    <tr class="border-b text-left">
+                        <th class="py-2 pr-2">Date</th>
+                        <th class="py-2 pr-2">Token</th>
+                        <th class="py-2 pr-2">Status</th>
+                        <th class="py-2 pr-2">Priority</th>
+                        <th class="py-2 pr-2">Short note</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for visit in visits %}
+                        <tr class="border-b">
+                            <td class="py-2 pr-2">{{ visit.created_at|date:"Y-m-d H:i" }}</td>
+                            <td class="py-2 pr-2">{{ visit.token_number }}</td>
+                            <td class="py-2 pr-2">{{ visit.get_status_display }}</td>
+                            <td class="py-2 pr-2">{{ visit.get_priority_level_display }}</td>
+                            <td class="py-2 pr-2">{{ visit.short_note|default:"—" }}</td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="5" class="py-4 text-center text-slate-500">No visits yet.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+</div>
+{% endblock %}

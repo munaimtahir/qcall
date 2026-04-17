@@ -1,0 +1,16 @@
+{% extends "base/base.html" %}
+
+{% block title %}Doctor Dashboard{% endblock %}
+
+{% block content %}
+<div class="rounded-lg bg-white p-4 shadow mb-4">
+    <form method="post" hx-post="{% url 'queue:call-next' %}" hx-target="#doctor-panels" hx-swap="innerHTML">
+        {% csrf_token %}
+        <button class="rounded bg-emerald-600 px-4 py-2 text-white font-semibold">Call Next</button>
+    </form>
+</div>
+
+<div id="doctor-panels" hx-get="{% url 'queue:partial-current' %}" hx-trigger="load, every 5s" hx-swap="innerHTML">
+    {% include "doctor/partials/_doctor_panels.html" %}
+</div>
+{% endblock %}

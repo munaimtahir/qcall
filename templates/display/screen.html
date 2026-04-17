@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ app_settings.clinic_name|default:"Queue Display" }}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.12"></script>
+</head>
+<body class="min-h-screen bg-black text-white">
+    <main class="mx-auto max-w-6xl px-4 py-8">
+        <h1 class="text-3xl font-bold mb-6">{{ app_settings.clinic_name|default:"Queue Management MVP" }}</h1>
+        <div id="display-panel" hx-get="{% url 'display:partial-panel' %}" hx-trigger="load, every 5s" hx-swap="innerHTML">
+            {% include "display/partials/_panel.html" %}
+        </div>
+    </main>
+</body>
+</html>

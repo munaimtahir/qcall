@@ -1,0 +1,34 @@
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <section class="lg:col-span-2 rounded-lg bg-slate-900 p-6 border border-slate-700">
+        <p class="text-slate-300 text-sm mb-2">Now Serving</p>
+        {% if current_visit %}
+            <p class="text-8xl font-extrabold leading-none mb-3">#{{ current_visit.token_number }}</p>
+            {% if app_settings.public_display_show_patient_name %}
+                <p class="text-2xl">{{ current_visit.patient.full_name }}</p>
+            {% else %}
+                <p class="text-xl text-slate-300">Please proceed to doctor room</p>
+            {% endif %}
+        {% else %}
+            <p class="text-5xl font-extrabold">--</p>
+            <p class="text-slate-400 mt-2">Waiting for next patient</p>
+        {% endif %}
+    </section>
+
+    <section class="rounded-lg bg-slate-900 p-6 border border-slate-700">
+        <p class="text-slate-300 text-sm mb-2">Up Next</p>
+        {% if next_visits %}
+            <ul class="space-y-2">
+                {% for visit in next_visits %}
+                    <li class="rounded bg-slate-800 px-3 py-2 text-xl font-semibold">
+                        #{{ visit.token_number }}
+                        {% if app_settings.public_display_show_patient_name %}
+                            <span class="text-sm font-normal text-slate-300">· {{ visit.patient.full_name }}</span>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="text-slate-400">No waiting tokens</p>
+        {% endif %}
+    </section>
+</div>

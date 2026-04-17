@@ -1,0 +1,32 @@
+{% extends "base/base.html" %}
+
+{% block title %}Settings{% endblock %}
+
+{% block content %}
+<div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+    <section class="rounded-lg bg-white p-4 shadow">
+        <h1 class="text-xl font-semibold mb-4">Operational Settings</h1>
+        <form method="post" class="space-y-3">
+            {% csrf_token %}
+            {% for field in form %}
+                <div>
+                    <label class="block text-sm font-medium mb-1" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                        <p class="text-xs text-red-600">{{ field.errors|striptags }}</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <button type="submit" class="rounded bg-slate-900 px-4 py-2 text-white">Save settings</button>
+        </form>
+    </section>
+    <section class="rounded-lg bg-white p-4 shadow">
+        <h2 class="text-lg font-semibold mb-2">Daily queue reset</h2>
+        <p class="text-sm text-slate-600 mb-3">This closes today's active queue session and preserves all historical visits.</p>
+        <form method="post" action="{% url 'settings_app:queue-reset' %}">
+            {% csrf_token %}
+            <button type="submit" class="rounded bg-red-600 px-4 py-2 text-white">Reset today's queue</button>
+        </form>
+    </section>
+</div>
+{% endblock %}

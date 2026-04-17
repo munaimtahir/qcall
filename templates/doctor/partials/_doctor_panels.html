@@ -1,0 +1,56 @@
+<div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+    <section class="xl:col-span-2 rounded-lg bg-white p-5 shadow">
+        <h2 class="text-lg font-semibold mb-3">Current Patient</h2>
+        {% if current_visit %}
+            <div class="rounded border p-4 mb-3">
+                <p class="text-3xl font-bold mb-1">Token {{ current_visit.token_number }}</p>
+                <p class="text-lg">{{ current_visit.patient.full_name }}</p>
+                <p class="text-sm text-slate-500">{{ current_visit.patient.mobile_number }} · {{ current_visit.patient.age }} / {{ current_visit.patient.get_gender_display }}</p>
+                {% if current_visit.short_note %}
+                    <p class="mt-2 text-sm"><strong>Note:</strong> {{ current_visit.short_note }}</p>
+                {% endif %}
+            </div>
+            <div class="flex gap-2">
+                <form method="post" hx-post="{% url 'queue:done' current_visit.id %}" hx-target="#doctor-panels" hx-swap="innerHTML">
+                    {% csrf_token %}
+                    <button class="rounded bg-emerald-600 px-3 py-2 text-sm text-white">Mark done</button>
+                </form>
+                <form method="post" hx-post="{% url 'queue:skip' current_visit.id %}" hx-target="#doctor-panels" hx-swap="innerHTML">
+                    {% csrf_token %}
+                    <input type="hidden" name="target" value="doctor">
+                    <button class="rounded bg-amber-500 px-3 py-2 text-sm text-white">Skip</button>
+                </form>
+            </div>
+            <div class="mt-4">
+                <h3 class="font-medium mb-2 text-sm text-slate-700">Recent visits</h3>
+                {% if history_visits %}
+                    <ul class="space-y-1 text-sm">
+                        {% for visit in history_visits %}
+                            <li class="rounded bg-slate-50 px-2 py-1">{{ visit.created_at|date:"Y-m-d" }} · Token {{ visit.token_number }} · {{ visit.get_status_display }}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="text-sm text-slate-500">No prior visit history.</p>
+                {% endif %}
+            </div>
+        {% else %}
+            <p class="text-slate-500">No patient currently with doctor.</p>
+        {% endif %}
+    </section>
+
+    <section class="rounded-lg bg-white p-5 shadow">
+        <h2 class="text-lg font-semibold mb-3">Next waiting</h2>
+        {% if next_visits %}
+            <ul class="space-y-2">
+                {% for visit in next_visits %}
+                    <li class="rounded border p-2 text-sm">
+                        <p class="font-semibold">#{{ visit.token_number }} · {{ visit.patient.full_name }}</p>
+                        <p class="text-slate-500">{{ visit.get_priority_level_display }}</p>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="text-slate-500">Queue is empty.</p>
+        {% endif %}
+    </section>
+</div>

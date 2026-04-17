@@ -1,0 +1,66 @@
+<div id="queue-list-container" class="rounded-lg bg-white p-4 shadow">
+    <div class="flex items-center justify-between mb-3">
+        <h2 class="text-lg font-semibold">Today's Queue · {{ session.queue_date }}</h2>
+        <span class="text-sm text-slate-500">Last token: {{ session.last_issued_token_number }}</span>
+    </div>
+
+    {% if queue_visits %}
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+                <thead>
+                    <tr class="text-left border-b">
+                        <th class="py-2 pr-2">Token</th>
+                        <th class="py-2 pr-2">Patient</th>
+                        <th class="py-2 pr-2">Priority</th>
+                        <th class="py-2 pr-2">Status</th>
+                        <th class="py-2">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for visit in queue_visits %}
+                        <tr class="border-b align-top">
+                            <td class="py-2 pr-2 font-semibold">{{ visit.token_number }}</td>
+                            <td class="py-2 pr-2">
+                                <a href="{% url 'patients:detail' visit.patient_id %}" class="hover:underline">{{ visit.patient.full_name }}</a>
+                                <p class="text-xs text-slate-500">{{ visit.patient.mobile_number }}</p>
+                            </td>
+                            <td class="py-2 pr-2">
+                                <span class="rounded px-2 py-1 text-xs {% if visit.priority_level == 'urgent' %}bg-red-100 text-red-700{% else %}bg-slate-100 text-slate-700{% endif %}">
+                                    {{ visit.get_priority_level_display }}
+                                </span>
+                            </td>
+                            <td class="py-2 pr-2">
+                                <span class="rounded px-2 py-1 text-xs bg-blue-100 text-blue-700">{{ visit.get_status_display }}</span>
+                            </td>
+                            <td class="py-2">
+                                <div class="flex flex-wrap gap-1">
+                                    {% if visit.status == "waiting" %}
+                                        <form method="post" hx-post="{% url 'queue:urgent' visit.id %}" hx-target="#queue-list-container" hx-swap="outerHTML">
+                                            {% csrf_token %}
+                                            <button class="rounded border px-2 py-1 text-xs">Urgent</button>
+                                        </form>
+                                        <form method="post" hx-post="{% url 'queue:cancel' visit.id %}" hx-target="#queue-list-container" hx-swap="outerHTML">
+                                            {% csrf_token %}
+                                            <button class="rounded border px-2 py-1 text-xs">Cancel</button>
+                                        </form>
+                                        <form method="post" hx-post="{% url 'queue:skip' visit.id %}" hx-target="#queue-list-container" hx-swap="outerHTML">
+                                            {% csrf_token %}
+                                            <button class="rounded border px-2 py-1 text-xs">Skip</button>
+                                        </form>
+                                    {% elif visit.status == "skipped" %}
+                                        <form method="post" hx-post="{% url 'queue:requeue' visit.id %}" hx-target="#queue-list-container" hx-swap="outerHTML">
+                                            {% csrf_token %}
+                                            <button class="rounded border px-2 py-1 text-xs">Requeue</button>
+                                        </form>
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p class="text-sm text-slate-500">No patients in queue yet.</p>
+    {% endif %}
+</div>

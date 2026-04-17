@@ -1,0 +1,24 @@
+{% extends "base/base.html" %}
+
+{% block title %}Login · {{ app_settings.clinic_name|default:"Queue Management MVP" }}{% endblock %}
+
+{% block content %}
+<div class="mx-auto max-w-md rounded-lg bg-white p-6 shadow">
+    <h1 class="text-xl font-semibold mb-4">Sign in</h1>
+    <form method="post" class="space-y-4">
+        {% csrf_token %}
+        <div>
+            <label for="id_username" class="block text-sm font-medium mb-1">Username</label>
+            <input id="id_username" type="text" name="username" class="w-full rounded border px-3 py-2" required autofocus>
+        </div>
+        <div>
+            <label for="id_password" class="block text-sm font-medium mb-1">Password</label>
+            <input id="id_password" type="password" name="password" class="w-full rounded border px-3 py-2" required>
+        </div>
+        {% if form.errors %}
+            <p class="text-sm text-red-600">Invalid username or password.</p>
+        {% endif %}
+        <button type="submit" class="w-full rounded bg-slate-900 px-4 py-2 text-white">Login</button>
+    </form>
+</div>
+{% endblock %}
